@@ -1,0 +1,53 @@
+═══════════════════════════════════════════════════════════════
+  QUICK START - Run These Commands After Installing Git
+═══════════════════════════════════════════════════════════════
+
+1. CONFIGURE GIT (Replace with your email):
+   ──────────────────────────────────────────
+   git config --global user.name "dzambrano1"
+   git config --global user.email "YOUR_EMAIL@example.com"
+
+2. INITIALIZE REPOSITORY:
+   ──────────────────────────────────────────
+   cd C:\xampp\htdocs\aviar
+   git init
+   git add .
+   git commit -m "Initial commit: Aviar poultry management system"
+
+3. EASIEST METHOD - Using GitHub CLI:
+   ──────────────────────────────────────────
+   winget install --id GitHub.cli
+   gh auth login
+   gh repo create aviar --public --source=. --remote=origin --push
+
+   OR
+
+4. MANUAL METHOD - Create repo on GitHub first:
+   ──────────────────────────────────────────
+   a) Go to: https://github.com/new
+   b) Name: aviar
+   c) Do NOT initialize with README
+   d) Click "Create repository"
+   
+   Then run:
+   git remote add origin https://github.com/dzambrano1/aviar.git
+   git branch -M main
+   git push -u origin main
+
+5. VERIFY:
+   ──────────────────────────────────────────
+   git status
+   git remote -v
+
+═══════════════════════════════════════════════════════════════
+  DAILY USE - Saving Changes
+═══════════════════════════════════════════════════════════════
+
+git add .
+git commit -m "Description of what you changed"
+git push
+
+═══════════════════════════════════════════════════════════════
+
+See GIT_SETUP_GUIDE.md for detailed instructions!
+

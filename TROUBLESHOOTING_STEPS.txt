@@ -1,0 +1,287 @@
+================================================================================
+GODADDY 500 ERROR - SYSTEMATIC TROUBLESHOOTING GUIDE
+================================================================================
+
+Your files have NO PHP syntax errors locally, so the 500 error on GoDaddy is
+caused by server configuration or environment differences.
+
+Follow these steps IN ORDER:
+================================================================================
+
+STEP 1: Test Basic PHP
+-----------------------
+Upload: test1_basic.php
+Access: https://yourdomain.com/aviar/test1_basic.php
+
+Expected: Shows "PHP is working!" message
+If FAILS: PHP is not enabled or wrong file permissions
+    Fix: Set file to 644 permissions, check PHP version in cPanel
+
+
+STEP 2: Test PDO Extension
+---------------------------
+Upload: test2_pdo.php
+Access: https://yourdomain.com/aviar/test2_pdo.php
+
+Expected: Shows green checkmarks for PDO and PDO_MySQL
+If FAILS: PDO not enabled
+    Fix: cPanel → Select PHP Version → Enable PDO and PDO_MySQL extensions
+    Or: Contact GoDaddy support to enable them
+
+
+STEP 3: Test Database Connection
+---------------------------------
+Upload: test3_database.php
+Access: https://yourdomain.com/aviar/test3_database.php
+
+Action: Fill in the form with your GoDaddy database credentials
+Expected: Green "CONNECTION SUCCESSFUL" message
+
+If FAILS with "Access denied":
+    - Wrong username or password
+    - Check cPanel → MySQL Databases for correct values
+    - GoDaddy typically prefixes: username_dbname
+
+If FAILS with "Can't connect":
+    - Wrong host (usually 'localhost')
+    - Database server may be down (rare)
+
+
+STEP 4: Test pdo_conexion.php
+------------------------------
+Upload: test4_include.php
+Access: https://yourdomain.com/aviar/test4_include.php
+
+Expected: Green checkmarks showing connection works
+If FAILS: pdo_conexion.php has wrong credentials
+    Fix: Update pdo_conexion.php lines 17-19 with values from Step 3
+
+
+STEP 5: Test Minimal Inventario
+--------------------------------
+Upload: test5_inventario_minimal.php
+Access: https://yourdomain.com/aviar/test5_inventario_minimal.php
+
+Expected: Shows table with sample records
+If FAILS: Database table doesn't exist or query error
+    Fix: Import your SQL file via cPanel → phpMyAdmin
+
+
+STEP 6: Test With Error Display
+--------------------------------
+Upload: inventario_aviar_debug.php
+Access: https://yourdomain.com/aviar/inventario_aviar_debug.php
+
+Expected: Shows the EXACT error message instead of generic 500
+Action: Read the error message and fix accordingly
+
+
+STEP 7: Check GoDaddy Error Logs
+---------------------------------
+1. Login to GoDaddy cPanel
+2. Go to: Metrics → Error Logs (or "Errors")
+3. Look for entries from the last few minutes
+4. Find the error for inventario_aviar.php
+5. The log shows the EXACT PHP error
+
+Common errors found in logs:
+- "Access denied" → Wrong database credentials
+- "Table 'aviar' doesn't exist" → Database not imported
+- "Maximum execution time exceeded" → File processing takes too long
+- "Allowed memory size exhausted" → Not enough memory
+- "Call to undefined function" → Missing PHP extension
+
+================================================================================
+MOST LIKELY CAUSES (Based on your situation)
+================================================================================
+
+1. DATABASE CREDENTIALS NOT UPDATED ⭐ MOST COMMON
+   -------------------------------------------
+   Problem: pdo_conexion.php lines 17-19 still have default values
+   
+   Current (won't work):
+       $username = "root";
+       $password = "";
+       $dbname = "aviar";
+   
+   Should be (your actual GoDaddy values):
+       $username = "registroca_aviarus";  // Example
+       $password = "YourActualPassword";
+       $dbname = "registroca_aviar";      // Example
+   
+   Fix: Get correct values from cPanel → MySQL Databases
+        Update pdo_conexion.php
+        Re-upload
+
+
+2. DATABASE NOT IMPORTED ON GODADDY
+   --------------------------------
+   Problem: Files uploaded but database not created/imported
+   
+   Fix: 
+   1. Export local database: phpMyAdmin → Export → aviar.sql
+   2. Create database: GoDaddy cPanel → MySQL Databases → Create
+   3. Create user: Add New User (write down username/password)
+   4. Add user to database: Select "All Privileges"
+   5. Import data: cPanel → phpMyAdmin → Select DB → Import → Choose .sql
+
+
+3. PHP VERSION TOO OLD
+   --------------------
+   Problem: GoDaddy using PHP 5.x (code needs 7.0+)
+   
+   Fix: 
+   1. GoDaddy cPanel → Software → Select PHP Version
+   2. Select: PHP 7.4 or PHP 8.0
+   3. Click Save
+   4. Wait 2-3 minutes for changes
+
+
+4. FILE PERMISSIONS INCORRECT
+   ---------------------------
+   Problem: Files uploaded with wrong permissions
+   
+   Fix: 
+   Via FTP:
+   - Right-click each .php file → Permissions → Set to 644
+   - Right-click directories → Permissions → Set to 755
+   
+   Via cPanel File Manager:
+   - Right-click → Change Permissions → Enter 644 or 755
+
+
+5. MEMORY OR EXECUTION TIME LIMIT
+   -------------------------------
+   Problem: inventario_aviar.php is large and exceeds limits
+   
+   Fix: Create .htaccess file with:
+       php_value memory_limit 256M
+       php_value max_execution_time 300
+
+
+6. MISSING FPDF LIBRARY
+   --------------------
+   Problem: aviar_report.php requires FPDF
+   
+   Fix: Upload the entire fpdf/ folder to your GoDaddy server
+
+================================================================================
+ADDITIONAL DIAGNOSTICS
+================================================================================
+
+Check PHP Info:
+---------------
+Upload: server_info.php
+Access: https://yourdomain.com/aviar/server_info.php?pass=check123
+Look for: PDO support, memory_limit, max_execution_time
+
+
+Run Compatibility Check:
+------------------------
+Upload: check_godaddy_compatibility.php
+Access: https://yourdomain.com/aviar/check_godaddy_compatibility.php
+Fix: Any items shown in RED
+
+
+Check File Upload:
+------------------
+Verify ALL these files are on GoDaddy:
+□ inventario_aviar.php
+□ pdo_conexion.php
+□ aviar_search.php
+□ aviar_report.php
+□ aviar_inventario_update.php
+□ chatpdf_proxy.php
+□ uploads/ (directory)
+□ images/ (directory)
+□ fpdf/ (directory - for PDF generation)
+
+
+Check Database Import:
+----------------------
+1. GoDaddy cPanel → phpMyAdmin
+2. Select your database
+3. Check if these tables exist:
+   - aviar (main table)
+4. Click aviar → Browse
+5. Verify records exist
+
+
+Check Environment Detection:
+---------------------------
+The pdo_conexion.php detects environment by checking:
+    $is_production = ($_SERVER['SERVER_NAME'] !== 'localhost');
+
+On GoDaddy, this should be TRUE, so it uses production credentials.
+
+To verify:
+1. Create test_environment.php:
+   <?php
+   echo "Server Name: " . $_SERVER['SERVER_NAME'] . "<br>";
+   echo "Is Production: " . ($_SERVER['SERVER_NAME'] !== 'localhost' ? 'YES' : 'NO');
+   ?>
+2. Upload and access
+3. Should show "Is Production: YES"
+
+================================================================================
+WHAT TO DO IF ALL TESTS PASS BUT MAIN FILE STILL FAILS
+================================================================================
+
+This means the issue is specific to inventario_aviar.php content.
+
+Possible causes:
+1. File is too large for server to process
+2. Specific PHP function not available on GoDaddy
+3. JavaScript/CSS causing server-side parsing issues
+4. Character encoding issues
+
+Solutions:
+----------
+A. Check Error Log (Step 7 above) for exact error
+
+B. Split the file:
+   - Move CSS to separate .css file
+   - Move JavaScript to separate .js file
+   - Make PHP file smaller
+
+C. Increase limits via .htaccess:
+   php_value memory_limit 512M
+   php_value max_execution_time 600
+
+D. Contact GoDaddy support with:
+   - Your domain
+   - The file causing error
+   - Time of error
+   - Error log screenshot
+
+================================================================================
+SUMMARY CHECKLIST
+================================================================================
+
+Before contacting support, verify:
+□ All 6 test files uploaded and tested
+□ test3_database.php shows successful connection
+□ test4_include.php works
+□ pdo_conexion.php has correct GoDaddy credentials
+□ Database imported via phpMyAdmin
+□ PHP version set to 7.4 or 8.0
+□ File permissions: 644 for files, 755 for directories
+□ Error logs checked in cPanel
+□ fpdf/ folder uploaded (for PDF reports)
+□ uploads/ folder exists with correct permissions
+
+================================================================================
+NEXT IMMEDIATE STEPS FOR YOU
+================================================================================
+
+1. Upload test1_basic.php → test if it works
+2. If test1 works → upload test2_pdo.php
+3. If test2 works → upload test3_database.php and test connection
+4. If test3 works → update pdo_conexion.php with those credentials
+5. Re-upload pdo_conexion.php
+6. Test inventario_aviar.php again
+7. If still fails → check GoDaddy error log for exact error
+8. Fix the specific error shown in log
+
+================================================================================
+
