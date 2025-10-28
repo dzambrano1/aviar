@@ -1,0 +1,39 @@
+<?php
+require_once './pdo_conexion.php';
+
+// Set content type to JSON
+header('Content-Type: application/json');
+
+try {
+    // Enable error reporting in PDO
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    // Query to get monthly deaths data from aviar table using deceso_fecha
+    $query = "SELECT 
+                DATE_FORMAT(deceso_fecha, '%Y-%m') AS month,
+                COUNT(*) AS deaths_count,
+                GROUP_CONCAT(DISTINCT tagid ORDER BY tagid SEPARATOR ', ') AS tagids
+              FROM aviar
+              WHERE 
+                deceso_fecha IS NOT NULL AND 
+                deceso_fecha != '0000-00-00'
+              GROUP BY DATE_FORMAT(deceso_fecha, '%Y-%m')
+              ORDER BY month ASC";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->execute();
+    $monthlyData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Output the data as JSON
+    echo json_encode($monthlyData);
+    
+} catch (PDOException $e) {
+    // Return error message
+    echo json_encode([
+        'error' => true,
+        'message' => 'Database error: ' . $e->getMessage()
+    ]);
+    
+    // Log the error
+    error_log('Error in get_deaths_data.php: ' . $e->getMessage());
+}

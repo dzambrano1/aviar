@@ -1,0 +1,91 @@
+[16-Aug-2025 16:29:16 UTC] PHP Warning:  require_once(/home/kt7djhj9ob5a/public_html/registroca.com/aviar/pdo_conexion.php): Failed to open stream: No such file or directory in /home/kt7djhj9ob5a/public_html/registroca.com/aviar/aviar_register_compras.php on line 2
+[16-Aug-2025 16:29:16 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/kt7djhj9ob5a/public_html/registroca.com/aviar/pdo_conexion.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/kt7djhj9ob5a/public_html/registroca.com/aviar/aviar_register_compras.php:2
+Stack trace:
+#0 {main}
+  thrown in /home/kt7djhj9ob5a/public_html/registroca.com/aviar/aviar_register_compras.php on line 2
+[16-Aug-2025 16:31:23 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'ganagram.ac_razas' doesn't exist in /home/kt7djhj9ob5a/public_html/registroca.com/aviar/aviar_register_compras.php:364
+Stack trace:
+#0 /home/kt7djhj9ob5a/public_html/registroca.com/aviar/aviar_register_compras.php(364): mysqli->query()
+#1 {main}
+  thrown in /home/kt7djhj9ob5a/public_html/registroca.com/aviar/aviar_register_compras.php on line 364
+[16-Aug-2025 16:42:03 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'ganagram.ac_razas' doesn't exist in /home/kt7djhj9ob5a/public_html/registroca.com/aviar/aviar_register_compras.php:364
+Stack trace:
+#0 /home/kt7djhj9ob5a/public_html/registroca.com/aviar/aviar_register_compras.php(364): mysqli->query()
+#1 {main}
+  thrown in /home/kt7djhj9ob5a/public_html/registroca.com/aviar/aviar_register_compras.php on line 364
+[16-Aug-2025 16:42:13 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'ganagram.ac_razas' doesn't exist in /home/kt7djhj9ob5a/public_html/registroca.com/aviar/aviar_register_compras.php:364
+Stack trace:
+#0 /home/kt7djhj9ob5a/public_html/registroca.com/aviar/aviar_register_compras.php(364): mysqli->query()
+#1 {main}
+  thrown in /home/kt7djhj9ob5a/public_html/registroca.com/aviar/aviar_register_compras.php on line 364
+[16-Aug-2025 16:46:46 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'ganagram.ac_razas' doesn't exist in /home/kt7djhj9ob5a/public_html/registroca.com/aviar/aviar_register_compras.php:364
+Stack trace:
+#0 /home/kt7djhj9ob5a/public_html/registroca.com/aviar/aviar_register_compras.php(364): mysqli->query()
+#1 {main}
+  thrown in /home/kt7djhj9ob5a/public_html/registroca.com/aviar/aviar_register_compras.php on line 364
+[16-Aug-2025 16:52:44 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'ganagram.ac_razas' doesn't exist in /home/kt7djhj9ob5a/public_html/registroca.com/aviar/aviar_register_compras.php:364
+Stack trace:
+#0 /home/kt7djhj9ob5a/public_html/registroca.com/aviar/aviar_register_compras.php(364): mysqli->query()
+#1 {main}
+  thrown in /home/kt7djhj9ob5a/public_html/registroca.com/aviar/aviar_register_compras.php on line 364
+[16-Aug-2025 16:55:09 UTC] Executed query: SELECT id, tagid, nombre, genero, raza, etapa, grupo, estatus, fecha_nacimiento, image, image2, image3, video 
+        FROM aviar ORDER BY tagid ASC
+[16-Aug-2025 16:55:39 UTC] Error fetching vacunas: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ganagram.ac_colera' doesn't exist
+[16-Aug-2025 16:55:39 UTC] Error fetching configuration: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a_vencimiento_colera' in 'SELECT'
+[16-Aug-2025 16:55:39 UTC] Error fetching vacunas: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ganagram.ac_colera' doesn't exist
+[16-Aug-2025 16:55:50 UTC] Error fetching vacunas: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ganagram.ac_coriza' doesn't exist
+[16-Aug-2025 16:55:50 UTC] Error fetching configuration: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a_vencimiento_coriza' in 'SELECT'
+[16-Aug-2025 16:55:50 UTC] Error fetching vacunas: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ganagram.ac_coriza' doesn't exist
+[16-Aug-2025 16:56:05 UTC] Error fetching vacunas: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ganagram.ac_encefalomielitis' doesn't exist
+[16-Aug-2025 16:56:05 UTC] Error fetching configuration: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a_vencimiento_encefalomielitis' in 'SELECT'
+[16-Aug-2025 16:56:05 UTC] Error fetching vacunas: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ganagram.ac_encefalomielitis' doesn't exist
+[16-Aug-2025 16:56:16 UTC] Error fetching vacunas: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ganagram.ac_influenza' doesn't exist
+[16-Aug-2025 16:56:16 UTC] Error fetching configuration: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a_vencimiento_influenza' in 'SELECT'
+[16-Aug-2025 16:56:16 UTC] Error fetching vacunas: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ganagram.ac_influenza' doesn't exist
+[16-Aug-2025 16:56:24 UTC] Error fetching vacunas: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ganagram.ac_viruela' doesn't exist
+[16-Aug-2025 16:56:24 UTC] Error fetching configuration: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a_vencimiento_viruela' in 'SELECT'
+[16-Aug-2025 16:56:24 UTC] Error fetching vacunas: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ganagram.ac_viruela' doesn't exist
+[16-Aug-2025 20:22:58 UTC] Error fetching configuration: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a_vencimiento_viruela' in 'SELECT'
+[18-Aug-2025 19:35:46 UTC] Executed query: SELECT id, tagid, nombre, genero, raza, etapa, grupo, estatus, fecha_nacimiento, image, image2, image3, video 
+        FROM aviar ORDER BY tagid ASC
+[18-Aug-2025 20:41:37 UTC] Executed query: SELECT id, tagid, nombre, genero, raza, etapa, grupo, estatus, fecha_nacimiento, image, image2, image3, video 
+        FROM aviar ORDER BY tagid ASC
+[18-Aug-2025 20:41:58 UTC] Executed query: SELECT id, tagid, nombre, genero, raza, etapa, grupo, estatus, fecha_nacimiento, image, image2, image3, video 
+        FROM aviar ORDER BY tagid ASC
+[18-Aug-2025 20:44:25 UTC] Executed query: SELECT id, tagid, nombre, genero, raza, etapa, grupo, estatus, fecha_nacimiento, image, image2, image3, video 
+        FROM aviar ORDER BY tagid ASC
+[18-Aug-2025 20:44:41 UTC] Executed query: SELECT id, tagid, nombre, genero, raza, etapa, grupo, estatus, fecha_nacimiento, image, image2, image3, video 
+        FROM aviar ORDER BY tagid ASC
+[18-Aug-2025 20:50:54 UTC] Executed query: SELECT id, tagid, nombre, genero, raza, etapa, grupo, estatus, fecha_nacimiento, image, image2, image3, video 
+        FROM aviar ORDER BY tagid ASC
+[18-Aug-2025 20:54:00 UTC] Executed query: SELECT id, tagid, nombre, genero, raza, etapa, grupo, estatus, fecha_nacimiento, image, image2, image3, video 
+        FROM aviar ORDER BY tagid ASC
+[18-Aug-2025 20:59:32 UTC] Executed query: SELECT id, tagid, nombre, genero, raza, etapa, grupo, estatus, fecha_nacimiento, image, image2, image3, video 
+        FROM aviar ORDER BY tagid ASC
+[18-Aug-2025 21:00:54 UTC] Executed query: SELECT id, tagid, nombre, genero, raza, etapa, grupo, estatus, fecha_nacimiento, image, image2, image3, video 
+        FROM aviar ORDER BY tagid ASC
+[18-Aug-2025 21:07:45 UTC] Executed query: SELECT id, tagid, nombre, genero, raza, etapa, grupo, estatus, fecha_nacimiento, image, image2, image3, video 
+        FROM aviar ORDER BY tagid ASC
+[18-Aug-2025 21:07:52 UTC] PDF generated successfully: /home/kt7djhj9ob5a/public_html/registroca.com/aviar/reports/Gorditas_1441_2025-08-18_210752.pdf (Size: 882258 bytes)
+[18-Aug-2025 21:08:30 UTC] PDF generated successfully: /home/kt7djhj9ob5a/public_html/registroca.com/aviar/reports/Fuertes_12111_2025-08-18_210830.pdf (Size: 335915 bytes)
+[18-Aug-2025 21:09:09 UTC] PDF generated successfully: /home/kt7djhj9ob5a/public_html/registroca.com/aviar/reports/Gorditas_1441_2025-08-18_210909.pdf (Size: 882258 bytes)
+[18-Aug-2025 21:09:40 UTC] PDF generated successfully: /home/kt7djhj9ob5a/public_html/registroca.com/aviar/reports/Pintos_211_2025-08-18_210940.pdf (Size: 596799 bytes)
+[18-Aug-2025 21:10:47 UTC] Executed query: SELECT id, tagid, nombre, genero, raza, etapa, grupo, estatus, fecha_nacimiento, image, image2, image3, video 
+        FROM aviar ORDER BY tagid ASC
+[18-Aug-2025 21:10:55 UTC] PDF generated successfully: /home/kt7djhj9ob5a/public_html/registroca.com/aviar/reports/Fuertes_12111_2025-08-18_211055.pdf (Size: 335916 bytes)
+[18-Aug-2025 21:11:16 UTC] PDF generated successfully: /home/kt7djhj9ob5a/public_html/registroca.com/aviar/reports/Blancos_225_2025-08-18_211116.pdf (Size: 355807 bytes)
+[18-Aug-2025 21:12:35 UTC] PDF generated successfully: /home/kt7djhj9ob5a/public_html/registroca.com/aviar/reports/Exoticas_2561_2025-08-18_211235.pdf (Size: 398822 bytes)
+[18-Aug-2025 23:37:20 UTC] Error fetching configuration: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a_vencimiento_huevo' in 'SELECT'
+[18-Aug-2025 23:42:39 UTC] Update action received - tagid: 5244, nombre: Pechugonas, fecha_nacimiento: 2024-12-06, genero: Hembra, etapa: Crecimiento, raza: Plymouth Rock, grupo: 2da Semana, estatus: Activo, peso: 3, precio: 10.00, poblacion: 10
+[19-Aug-2025 21:18:07 UTC] Executed query: SELECT id, tagid, nombre, genero, raza, etapa, grupo, estatus, fecha_nacimiento, image, image2, image3, video 
+        FROM aviar ORDER BY tagid ASC
+[20-Aug-2025 19:38:41 UTC] Executed query: SELECT id, tagid, nombre, genero, raza, etapa, grupo, estatus, fecha_nacimiento, image, image2, image3, video 
+        FROM aviar ORDER BY tagid ASC
+[20-Aug-2025 20:39:46 UTC] Error fetching vacunas: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ganagram.ac_coriza' doesn't exist
+[20-Aug-2025 20:39:46 UTC] Error fetching configuration: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a_vencimiento_coriza' in 'SELECT'
+[20-Aug-2025 20:39:46 UTC] Error fetching vacunas: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ganagram.ac_coriza' doesn't exist
+[20-Aug-2025 20:48:06 UTC] Error fetching configuration: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a_vencimiento_coriza' in 'SELECT'
+[20-Aug-2025 20:48:20 UTC] Error fetching configuration: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a_vencimiento_coriza' in 'SELECT'
+[20-Aug-2025 20:48:46 UTC] Error fetching configuration: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a_vencimiento_coriza' in 'SELECT'
+[20-Aug-2025 20:49:29 UTC] Error fetching configuration: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a_vencimiento_coriza' in 'SELECT'
+[20-Aug-2025 22:59:50 UTC] Error fetching configuration: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a_vencimiento_huevo' in 'SELECT'

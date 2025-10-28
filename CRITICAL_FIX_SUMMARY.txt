@@ -1,0 +1,142 @@
+================================================================================
+🎯 CRITICAL FIX - FOUND THE 500 ERROR CAUSE!
+================================================================================
+
+PROBLEM IDENTIFIED:
+-------------------
+The file "aviar_share.php" had hardcoded database credentials that were WRONG:
+
+OLD (causing 500 error):
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $dbname = "ganagram";  ← WRONG DATABASE NAME!
+
+  Plus it was using MySQLi instead of PDO from pdo_conexion.php
+
+WHAT WAS HAPPENING:
+-------------------
+1. User clicks "Share Report" button in inventario_aviar.php
+2. JavaScript calls: aviar_share.php?file=...&tagid=...
+3. aviar_share.php tries to connect to database "ganagram" (doesn't exist!)
+4. Connection fails → 500 Internal Server Error
+
+FIX APPLIED:
+------------
+✓ Removed hardcoded database credentials
+✓ Now uses pdo_conexion.php (same as other files)
+✓ Converted from MySQLi to PDO
+✓ Added proper error handling
+
+FIXED FILE:
+-----------
+✓ aviar_share.php - NOW FIXED
+
+================================================================================
+OTHER FILES FOUND WITH SAME ISSUE:
+================================================================================
+
+The following files ALSO have hardcoded credentials and may cause similar errors:
+
+⚠️  CRITICAL (Used in main application):
+    - aviar_report2.php
+    - aviar_indices.php
+    - aviar_update.php
+    - aviar_update_raza.php
+    - aviar_update_grupo.php
+    - aviar_update_estatus.php
+    - aviar_venta_get_details.php
+
+⚠️  IMPORTANT (Used for charts/data):
+    - get_monthly_weight_value_data.php
+    - get_monthly_weight_data.php
+    - get_monthly_melaza_expense_data.php
+    - get_monthly_feed_weight_data.php
+    - get_monthly_sal_expense_data.php
+    - get_monthly_expense_data.php
+    - get_feria_animals.php
+
+⚠️  MODERATE (Used in specific features):
+    - edit_feria_price.php
+    - aviar_register_compras.php
+    - aviar_register_nacimientos.php
+    - aviar_register_ventas.php
+    - aviar_report_old.php (old file, may not be used)
+
+RECOMMENDATION:
+---------------
+All these files should be updated to use pdo_conexion.php instead of
+hardcoded credentials. This ensures:
+1. Single point of configuration
+2. Easy deployment (update pdo_conexion.php once)
+3. No 500 errors from wrong credentials
+
+================================================================================
+IMMEDIATE ACTIONS FOR YOU:
+================================================================================
+
+1. RE-UPLOAD aviar_share.php (the fixed version)
+   ✓ This will fix the immediate 500 error you're experiencing
+
+2. UPDATE pdo_conexion.php with your GoDaddy credentials
+   Edit lines 17-19:
+   $username = "your_godaddy_username";
+   $password = "your_godaddy_password";
+   $dbname = "your_godaddy_dbname";
+
+3. UPLOAD both files to GoDaddy
+
+4. TEST the share functionality again
+
+================================================================================
+TO FIX ON GODADDY:
+================================================================================
+
+Step 1: Update pdo_conexion.php
+--------------------------------
+Get your database credentials from:
+GoDaddy cPanel → Databases → MySQL Databases
+
+Update pdo_conexion.php lines 17-19:
+    $username = "registroca_aviarus";  // Your actual username
+    $password = "YourPassword123";      // Your actual password
+    $dbname = "registroca_aviar";       // Your actual database name
+
+Step 2: Upload Fixed Files
+---------------------------
+Upload these files to GoDaddy:
+✓ pdo_conexion.php (with your credentials)
+✓ aviar_share.php (fixed version)
+
+Step 3: Test
+------------
+1. Access your site: https://registroca.com/aviar/inventario_aviar.php
+2. Click on an animal's "Share" button
+3. Should now work without 500 error!
+
+================================================================================
+VERIFICATION:
+================================================================================
+
+After uploading, the Share Report feature should:
+✓ Generate PDF
+✓ Open share page without 500 error
+✓ Show animal name and Tag ID
+✓ Provide download and WhatsApp share options
+
+If you still get 500 error:
+1. Check GoDaddy error log (cPanel → Metrics → Error Logs)
+2. Make sure database was imported
+3. Make sure reports/ folder exists and has correct permissions (755)
+
+================================================================================
+OPTIONAL: Fix Other Files Later
+================================================================================
+
+When you have time, consider updating all the other files listed above to use
+pdo_conexion.php. This will prevent future 500 errors when those features are used.
+
+For now, the CRITICAL fix (aviar_share.php) should resolve your immediate issue!
+
+================================================================================
+

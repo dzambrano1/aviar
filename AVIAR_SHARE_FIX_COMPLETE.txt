@@ -1,0 +1,263 @@
+================================================================================
+AVIAR_SHARE.PHP - COMPLETE FIX
+================================================================================
+
+PROBLEMS FIXED:
+---------------
+
+1. ❌ HARDCODED DATABASE CREDENTIALS
+   OLD: Used "ganagram" database with mysqli
+   NEW: ✅ Uses pdo_conexion.php with PDO
+
+2. ❌ WRONG DATABASE NAME
+   OLD: $dbname = "ganagram" (doesn't exist on GoDaddy)
+   NEW: ✅ Uses database from pdo_conexion.php
+
+3. ❌ WRONG FILE PATHS IN DOWNLOAD LINKS
+   OLD: href="./reports/file.pdf" (filesystem path, won't work in browser)
+   NEW: ✅ href="reports/file.pdf" (web-accessible URL path)
+
+4. ❌ NO ERROR DISPLAY
+   OLD: Errors hidden (display_errors = 0)
+   NEW: ✅ Errors shown temporarily to diagnose issues
+
+================================================================================
+CHANGES MADE:
+================================================================================
+
+Line 1-13: Database Connection
+-------------------------------
+BEFORE:
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $dbname = "ganagram";  // WRONG!
+  
+  require_once './pdo_conexion.php';
+  
+  $conn = mysqli_connect(...);  // MySQLi
+
+AFTER:
+  ini_set('display_errors', 1);  // Show errors temporarily
+  
+  try {
+      require_once './pdo_conexion.php';  // PDO connection
+  } catch (Exception $e) {
+      die('Error loading database connection: ' . $e->getMessage());
+  }
+
+Line 30-43: Database Query
+---------------------------
+BEFORE:
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param('s', $tagid);  // MySQLi style
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $animal = $result->fetch_assoc();
+  $conn->close();
+
+AFTER:
+  try {
+      $stmt = $conn->prepare($sql);
+      $stmt->execute([$tagid]);  // PDO style
+      $animal = $stmt->fetch(PDO::FETCH_ASSOC);
+      
+      if (!$animal) {
+          die('Error: Animal not found');
+      }
+  } catch (PDOException $e) {
+      error_log('Database error: ' . $e->getMessage());
+      die('Error: Unable to retrieve animal information');
+  }
+
+Line 50-57: Download URLs
+--------------------------
+BEFORE:
+  $downloadUrl = $protocol . $host . dirname($_SERVER['PHP_SELF']) . '/reports/' . $filename;
+  // Only had $downloadUrl
+
+AFTER:
+  $downloadUrl = $protocol . $host . $scriptDir . '/reports/' . $filename;
+  
+  // Added separate variable for HTML download links
+  $downloadLink = 'reports/' . $filename;  // ← NEW: Web-accessible path
+
+Line 209: Download Button
+--------------------------
+BEFORE:
+  <a href="<?php echo $filepath; ?>" download>
+  // Used filesystem path (./reports/file.pdf)
+
+AFTER:
+  <a href="<?php echo $downloadLink; ?>" download>
+  // Uses web-accessible path (reports/file.pdf)
+
+Line 281: JavaScript Download
+------------------------------
+BEFORE:
+  downloadLink.href = "<?php echo $filepath; ?>";
+  // Used filesystem path
+
+AFTER:
+  downloadLinkEl.href = "<?php echo $downloadLink; ?>";
+  // Uses web-accessible path
+
+================================================================================
+FILE PATHS EXPLAINED:
+================================================================================
+
+FILESYSTEM PATH (for PHP file operations):
+  $filepath = './reports/Tito_12111_2025-10-14_191712.pdf'
+  Used for: file_exists(), filesize(), file_get_contents()
+  ✓ Works for backend PHP operations
+
+WEB-ACCESSIBLE PATH (for HTML/browser):
+  $downloadLink = 'reports/Tito_12111_2025-10-14_191712.pdf'
+  Used for: <a href="">, JavaScript download
+  ✓ Works for frontend browser access
+  ✓ Browser converts to: https://registroca.com/aviar/reports/file.pdf
+
+FULL URL (for sharing):
+  $downloadUrl = 'https://registroca.com/aviar/reports/file.pdf'
+  Used for: WhatsApp sharing links
+  ✓ Works for external sharing
+
+================================================================================
+WHAT TO UPLOAD TO GODADDY:
+================================================================================
+
+REQUIRED FILES:
+---------------
+1. ✅ aviar_share.php (THIS FIXED VERSION)
+   - Now shows errors temporarily (for debugging)
+   - Uses PDO instead of MySQLi
+   - Correct file paths for downloads
+
+2. ✅ pdo_conexion.php (WITH YOUR GODADDY CREDENTIALS)
+   - Must have correct database name, username, password
+   - Lines 17-19 should be updated with your GoDaddy values
+
+VERIFY THESE EXIST ON GODADDY:
+-------------------------------
+□ reports/ directory (should exist with 755 permissions)
+□ Database imported (aviar table should exist)
+□ PDF file exists in reports/ directory
+
+================================================================================
+TESTING PROCEDURE:
+================================================================================
+
+Step 1: Upload Files
+--------------------
+Upload to GoDaddy:
+  1. pdo_conexion.php (with correct credentials)
+  2. aviar_share.php (this fixed version)
+
+Step 2: Test Access
+--------------------
+Try accessing with a real PDF:
+  https://registroca.com/aviar/aviar_share.php?file=Tito_12111_2025-10-14_191712.pdf&tagid=12111
+
+Expected Results:
+  ✓ Page loads without 500 error
+  ✓ Shows animal name and tag ID
+  ✓ Download button works
+  ✓ WhatsApp share buttons work
+
+If 500 Error Still Occurs:
+  → The page will now SHOW the actual error message instead of generic 500
+  → Read the error and fix accordingly
+
+Step 3: Check What Errors Show
+-------------------------------
+Since display_errors is now ON, you'll see:
+
+If Database Error:
+  "Error loading database connection: [specific error]"
+  Fix: Update pdo_conexion.php with correct credentials
+
+If File Not Found:
+  "Error: File not found - ./reports/Tito_12111_2025-10-14_191712.pdf"
+  Fix: Make sure PDF was generated and saved to reports/ directory
+
+If Animal Not Found:
+  "Error: Animal not found"
+  Fix: Check that animal with tagid exists in database
+
+Step 4: After Fixing
+--------------------
+Once working, change line 3 back to:
+  ini_set('display_errors', 0);  // Hide errors in production
+
+================================================================================
+COMMON GODADDY ISSUES:
+================================================================================
+
+Issue 1: Still Getting 500 Error
+---------------------------------
+Cause: Database credentials in pdo_conexion.php are wrong
+Fix: Get correct values from cPanel → MySQL Databases
+
+Issue 2: "File not found" Error
+--------------------------------
+Cause: Reports directory doesn't exist or permissions wrong
+Fix: 
+  - Create reports/ folder via FTP or File Manager
+  - Set permissions to 755 or 775
+  - Check if PDF file actually exists
+
+Issue 3: "Animal not found" Error
+----------------------------------
+Cause: Database not imported or tagid doesn't exist
+Fix:
+  - Import your SQL file via phpMyAdmin
+  - Verify animal with that tagid exists in aviar table
+
+Issue 4: Download Button Doesn't Work
+--------------------------------------
+Cause: PDF file doesn't have correct web permissions
+Fix: Set PDF files to 644 permissions
+
+================================================================================
+VERIFICATION CHECKLIST:
+================================================================================
+
+Before testing:
+□ pdo_conexion.php updated with GoDaddy credentials (lines 17-19)
+□ Both files uploaded to GoDaddy
+□ reports/ directory exists on GoDaddy
+□ reports/ directory has 755 permissions
+□ Database imported (aviar table exists)
+□ PDF file exists in reports/ directory
+
+After accessing the URL, verify:
+□ No 500 error (page loads)
+□ Animal name displays correctly
+□ Tag ID displays correctly
+□ File size shows correctly
+□ Download button visible
+□ WhatsApp buttons visible
+
+Test downloads:
+□ Click "Descargar PDF" button
+□ PDF downloads successfully
+□ PDF opens correctly
+□ PDF contains correct animal data
+
+================================================================================
+SUMMARY:
+================================================================================
+
+The file aviar_share.php has been completely fixed:
+✅ Uses PDO from pdo_conexion.php (no hardcoded credentials)
+✅ Correct database name (from pdo_conexion.php, not "ganagram")
+✅ Correct file paths for web downloads (reports/ not ./reports/)
+✅ Error display enabled (temporarily) to see actual errors
+✅ Proper error handling with try-catch
+✅ No PHP syntax errors
+
+Upload this fixed version and pdo_conexion.php (with correct credentials) to
+resolve the 500 error!
+
+================================================================================
+
